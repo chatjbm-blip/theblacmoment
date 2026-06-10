@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const episodes = [
   {
@@ -41,9 +42,9 @@ const episodes = [
 
 export default function StreamSection() {
   return (
-    <section id="stream" className="relative py-24 md:py-32 bg-[#050505]">
+    <section id="stream" className="relative py-16 sm:py-24 md:py-32 bg-[#050505]">
       {/* Background accent */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#E47D08]/5 rounded-full blur-[200px]" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-[#E47D08]/5 rounded-full blur-[200px]" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
@@ -52,22 +53,76 @@ export default function StreamSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <span className="inline-block px-4 py-1.5 rounded-full bg-[#E47D08]/10 text-[#FF8D28] text-sm font-medium mb-6">
+          <span className="inline-block px-3 sm:px-4 py-1.5 rounded-full bg-[#E47D08]/10 text-[#FF8D28] text-xs sm:text-sm font-medium mb-4 sm:mb-6">
             Stream Now
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4">
             Catch the{" "}
             <span className="gradient-text">Vibe</span>
           </h2>
-          <p className="text-lg text-white/50 max-w-xl mx-auto">
+          <p className="text-base sm:text-lg text-white/50 max-w-xl mx-auto">
             Stream live episodes and catch up on conversations that matter.
           </p>
         </motion.div>
 
-        {/* Episodes Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Episodes — Horizontal scroll on mobile, grid on desktop */}
+        {/* Mobile: horizontal scrolling cards */}
+        <div className="md:hidden">
+          <div className="mobile-scroll gap-4 pb-4 -mx-4 px-4">
+            {episodes.map((episode, i) => (
+              <motion.div
+                key={episode.id}
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="w-[300px] shrink-0"
+              >
+                <div className="rounded-2xl overflow-hidden bg-white/[0.03] border border-white/[0.06] mobile-press">
+                  {/* Video */}
+                  <div className="relative aspect-video overflow-hidden">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${episode.youtubeId}?rel=0`}
+                      title={episode.title}
+                      allow="autoplay; encrypted-media"
+                      allowFullScreen
+                      className="absolute inset-0 w-full h-full"
+                      loading="lazy"
+                    />
+                  </div>
+                  {/* Content */}
+                  <div className="p-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#E47D08]/10 text-[#FF8D28] text-[10px] sm:text-xs font-semibold">
+                        {episode.number}
+                      </span>
+                      <span className="text-[10px] sm:text-xs text-white/30">{episode.date}</span>
+                    </div>
+                    <h3 className="text-sm font-bold text-white line-clamp-2 leading-snug">
+                      {episode.title}
+                    </h3>
+                    <p className="text-xs text-white/40 line-clamp-2">
+                      {episode.description}
+                    </p>
+                    <div className="flex items-center justify-between pt-1">
+                      <span className="text-[10px] text-white/30 font-medium">
+                        {episode.duration}
+                      </span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-white/40">
+                        {episode.category}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop: grid */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {episodes.map((episode, i) => (
             <motion.div
               key={episode.id}
@@ -123,15 +178,15 @@ export default function StreamSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-12 text-center"
+          className="mt-8 sm:mt-12 text-center"
         >
           <a
             href="https://www.youtube.com/@TheBlacMoment"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold transition-all duration-300 hover:scale-105 shadow-lg shadow-red-600/20"
+            className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white text-sm sm:text-base font-semibold transition-all duration-300 mobile-press shadow-lg shadow-red-600/20"
           >
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
               <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
             </svg>
             Watch on YouTube

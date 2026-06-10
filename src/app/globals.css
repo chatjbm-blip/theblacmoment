@@ -97,7 +97,7 @@
   }
 }
 
-/* Custom scrollbar */
+/* ─── Custom scrollbar ───────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -117,7 +117,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom font for decorative text */
+/* ─── Custom font for decorative text ────────────────────────── */
 @font-face {
   font-family: 'Mondira';
   src: url('/fonts/MondiraScript_PERSONAL_USE_ONLY.otf') format('opentype');
@@ -126,7 +126,7 @@ html {
   font-display: swap;
 }
 
-/* Audio player styles */
+/* ─── Audio player styles ────────────────────────────────────── */
 .audio-player input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -146,7 +146,7 @@ html {
   border: 2px solid #fff;
 }
 
-/* Gradient text utility */
+/* ─── Gradient text utility ──────────────────────────────────── */
 .gradient-text {
   background: linear-gradient(135deg, #E47D08 0%, #FF8D28 50%, #FFB347 100%);
   -webkit-background-clip: text;
@@ -154,7 +154,7 @@ html {
   background-clip: text;
 }
 
-/* Glassmorphism */
+/* ─── Glassmorphism ──────────────────────────────────────────── */
 .glass {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(12px);
@@ -162,7 +162,7 @@ html {
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Animated gradient border */
+/* ─── Animated gradient border ───────────────────────────────── */
 .gradient-border {
   position: relative;
   background: #0a0a0a;
@@ -184,7 +184,7 @@ html {
   50% { background-position: 100% 50%; }
 }
 
-/* Pulse glow */
+/* ─── Pulse glow ─────────────────────────────────────────────── */
 .pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
@@ -193,7 +193,7 @@ html {
   50% { box-shadow: 0 0 40px rgba(228, 125, 8, 0.6); }
 }
 
-/* Floating animation */
+/* ─── Floating animation ─────────────────────────────────────── */
 .float-animation {
   animation: float 6s ease-in-out infinite;
 }
@@ -202,11 +202,161 @@ html {
   50% { transform: translateY(-10px); }
 }
 
-/* Marquee for ticker */
+/* ─── Marquee for ticker ─────────────────────────────────────── */
 .marquee {
   animation: marquee 30s linear infinite;
 }
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
+}
+
+/* ─── Mobile Optimizations ───────────────────────────────────── */
+
+/* Prevent iOS bounce overscroll on body */
+@media (max-width: 768px) {
+  html, body {
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .audio-player-bar {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .mobile-nav-safe {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+  }
+}
+
+/* Minimum touch target size (44x44px per Apple HIG) */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Prevent text selection on interactive elements on mobile */
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent layout shift from scrollbar on mobile */
+@layer utilities {
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Mobile card press effect */
+.mobile-press {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.mobile-press:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+/* Better mobile tap feedback for buttons */
+@media (hover: none) and (pointer: coarse) {
+  button, a, [role="button"] {
+    -webkit-tap-highlight-color: rgba(228, 125, 8, 0.1);
+  }
+
+  /* Disable hover scale effects on touch devices */
+  .hover\:scale-105:hover,
+  .hover\:scale-110:hover,
+  .group-hover\:scale-110:hover {
+    transform: none;
+  }
+
+  /* Make hover effects instant on mobile */
+  .group:hover .group-hover\:text-\[\#FF8D28\],
+  .group:hover .group-hover\:bg-\[\#E47D08\]\/20 {
+    transition-duration: 0ms;
+  }
+}
+
+/* Smooth iframe loading on mobile to prevent jank */
+iframe {
+  will-change: transform;
+}
+
+/* Better mobile font rendering */
+@media (max-width: 768px) {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Reduce animation intensity on mobile for performance */
+  .animate-pulse {
+    animation-duration: 4s;
+  }
+
+  /* Ensure readable line lengths on mobile */
+  .max-w-lg, .max-w-xl, .max-w-2xl {
+    max-width: 100%;
+  }
+
+  /* Better mobile spacing for large sections */
+  .py-24 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  .py-32 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+/* Horizontal scroll container for mobile cards */
+.mobile-scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.mobile-scroll::-webkit-scrollbar {
+  display: none;
+}
+.mobile-scroll > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* Mobile bottom sheet style */
+.mobile-sheet {
+  border-radius: 1.5rem 1.5rem 0 0;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+/* Prevent iOS input zoom */
+@media screen and (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+  .min-h-screen {
+    min-height: auto;
+  }
 }

@@ -58,7 +58,7 @@ export default function ScrollProgress() {
         />
       </div>
 
-      {/* Side navigation dots (desktop) */}
+      {/* Side navigation dots (desktop only) */}
       <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden xl:flex flex-col gap-3">
         {sections.map((section) => (
           <button
@@ -85,7 +85,7 @@ export default function ScrollProgress() {
         ))}
       </div>
 
-      {/* Back to top button */}
+      {/* Back to top button — positioned above audio player on mobile */}
       <AnimatePresence>
         {showBackTop && (
           <motion.button
@@ -93,7 +93,7 @@ export default function ScrollProgress() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.5 }}
             onClick={scrollToTop}
-            className="fixed bottom-20 right-6 z-50 p-3 rounded-full bg-[#E47D08] hover:bg-[#FF8D28] text-white shadow-lg shadow-[#E47D08]/30 transition-all duration-300 hover:scale-110"
+            className="fixed bottom-24 sm:bottom-20 right-4 sm:right-6 z-50 p-3 rounded-full bg-[#E47D08] hover:bg-[#FF8D28] text-white shadow-lg shadow-[#E47D08]/30 transition-all duration-300 mobile-press touch-target"
             aria-label="Scroll to top"
           >
             <ChevronUp size={20} />

@@ -32,6 +32,18 @@ export default function Navbar() {
     setIsMobileOpen(false);
   }, [pathname]);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileOpen]);
+
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
@@ -45,7 +57,7 @@ export default function Navbar() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
           ? "glass py-2 shadow-lg shadow-black/20"
-          : "bg-transparent py-4"
+          : "bg-transparent py-3 sm:py-4"
       }`}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,7 +67,7 @@ export default function Navbar() {
             <img
               src="/images/logo.png"
               alt="The Blac Moment Logo"
-              className="h-10 w-auto transition-transform duration-300 group-hover:scale-110"
+              className="h-8 sm:h-10 w-auto transition-transform duration-300 group-hover:scale-110"
             />
           </Link>
 
@@ -94,7 +106,7 @@ export default function Navbar() {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden text-white hover:bg-white/10"
+            className="md:hidden text-white hover:bg-white/10 touch-target"
             onClick={() => setIsMobileOpen(!isMobileOpen)}
             aria-label="Toggle menu"
           >
@@ -103,45 +115,83 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu — Full screen overlay for better mobile UX */}
       <AnimatePresence>
         {isMobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden glass border-t border-white/5"
-          >
-            <div className="px-4 py-4 space-y-1">
-              {navLinks.map((link, i) => {
-                const active = isActive(link.href);
-                const isCTA = link.label === "Contact Us";
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm md:hidden"
+              style={{ top: 0 }}
+              onClick={() => setIsMobileOpen(false)}
+            />
+            {/* Menu Panel */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-x-0 top-0 md:hidden glass border-b border-white/5 mobile-nav-safe"
+            >
+              {/* Menu Header */}
+              <div className="flex items-center justify-between px-4 py-3">
+                <Link href="/" className="flex items-center gap-3" onClick={() => setIsMobileOpen(false)}>
+                  <img
+                    src="/images/logo.png"
+                    alt="The Blac Moment"
+                    className="h-8 w-auto"
+                  />
+                </Link>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-white hover:bg-white/10 touch-target"
+                  onClick={() => setIsMobileOpen(false)}
+                  aria-label="Close menu"
+                >
+                  <X size={24} />
+                </Button>
+              </div>
 
-                return (
-                  <motion.div
-                    key={link.label}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <Link
-                      href={link.href}
-                      className={`block w-full text-left px-4 py-3 text-base font-medium rounded-xl transition-colors ${
-                        isCTA
-                          ? "bg-[#E47D08] text-white hover:bg-[#FF8D28] text-center"
-                          : active
-                          ? "text-[#FF8D28] bg-white/5"
-                          : "text-white/80 hover:text-white hover:bg-white/5"
-                      }`}
+              {/* Nav Links */}
+              <div className="px-4 pb-6 pt-2 space-y-1">
+                {navLinks.map((link, i) => {
+                  const active = isActive(link.href);
+                  const isCTA = link.label === "Contact Us";
+
+                  return (
+                    <motion.div
+                      key={link.label}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
                     >
-                      {link.label}
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </motion.div>
+                      <Link
+                        href={link.href}
+                        onClick={() => setIsMobileOpen(false)}
+                        className={`flex items-center w-full text-left px-4 py-3.5 text-base font-medium rounded-xl transition-colors touch-target no-select ${
+                          isCTA
+                            ? "bg-[#E47D08] text-white hover:bg-[#FF8D28] text-center justify-center mt-3"
+                            : active
+                            ? "text-[#FF8D28] bg-white/5"
+                            : "text-white/80 hover:text-white hover:bg-white/5"
+                        }`}
+                      >
+                        {link.label}
+                        {active && !isCTA && (
+                          <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#E47D08]" />
+                        )}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </motion.header>

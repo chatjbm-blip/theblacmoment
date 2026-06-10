@@ -53,11 +53,11 @@ const quotes = [
 
 export default function HostPage() {
   return (
-    <div className="min-h-screen bg-black pt-24 pb-32">
+    <div className="min-h-screen bg-black pt-20 sm:pt-24 pb-28 sm:pb-32">
       {/* Background accents */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-[#E47D08]/5 rounded-full blur-[180px]" />
-        <div className="absolute bottom-1/3 left-0 w-[400px] h-[400px] bg-[#FF8D28]/5 rounded-full blur-[150px]" />
+        <div className="absolute top-1/4 right-0 w-[350px] md:w-[500px] h-[350px] md:h-[500px] bg-[#E47D08]/5 rounded-full blur-[180px]" />
+        <div className="absolute bottom-1/3 left-0 w-[300px] md:w-[400px] h-[300px] md:h-[400px] bg-[#FF8D28]/5 rounded-full blur-[150px]" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,23 +66,23 @@ export default function HostPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-16"
+          className="mb-10 sm:mb-16"
         >
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E47D08]/10 text-[#FF8D28] text-sm font-medium mb-6">
             <Mic2 size={14} />
             The Host
           </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4">
             The Voice Behind{" "}
             <span className="gradient-text">the Mic</span>
           </h1>
-          <p className="text-2xl md:text-3xl text-white/30 font-light italic">
+          <p className="text-xl sm:text-2xl md:text-3xl text-white/30 font-light italic">
             You know him as The Blac Shrec.
           </p>
         </motion.div>
 
         {/* Main Content */}
-        <div className="grid lg:grid-cols-5 gap-12 lg:gap-16 items-start">
+        <div className="grid lg:grid-cols-5 gap-8 sm:gap-12 lg:gap-16 items-start">
           {/* Portrait Column */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -90,17 +90,17 @@ export default function HostPage() {
             transition={{ duration: 0.7 }}
             className="lg:col-span-2"
           >
-            <div className="relative max-w-[400px] mx-auto lg:mx-0">
+            <div className="relative max-w-[280px] sm:max-w-[400px] mx-auto lg:mx-0">
               {/* Decorative rings */}
-              <div className="absolute -inset-4 rounded-[2rem] border-2 border-[#E47D08]/20" />
-              <div className="absolute -inset-8 rounded-[2.5rem] border border-[#E47D08]/10" />
+              <div className="absolute -inset-3 sm:-inset-4 rounded-[1.5rem] sm:rounded-[2rem] border-2 border-[#E47D08]/20" />
+              <div className="absolute -inset-6 sm:-inset-8 rounded-[2rem] sm:rounded-[2.5rem] border border-[#E47D08]/10 hidden sm:block" />
 
               {/* Main Portrait */}
               <div className="rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-[#E47D08]/10">
                 <img
                   src="/images/host-portrait.jpeg"
                   alt="Cornelius Kayode - Host of The Blac Moment"
-                  className="w-full h-[500px] md:h-[600px] object-cover object-top"
+                  className="w-full h-[350px] sm:h-[500px] md:h-[600px] object-cover object-top"
                 />
               </div>
 
@@ -112,12 +112,12 @@ export default function HostPage() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute -bottom-5 left-1/2 -translate-x-1/2 glass rounded-2xl px-8 py-4 text-center min-w-[240px]"
+                className="absolute -bottom-4 sm:-bottom-5 left-1/2 -translate-x-1/2 glass rounded-xl sm:rounded-2xl px-5 sm:px-8 py-3 sm:py-4 text-center min-w-[180px] sm:min-w-[240px]"
               >
-                <p className="font-bold text-white text-lg">
+                <p className="font-bold text-white text-sm sm:text-lg">
                   Cornelius Kayode
                 </p>
-                <p className="text-sm text-[#FF8D28]">
+                <p className="text-[10px] sm:text-sm text-[#FF8D28]">
                   Host & Creator · The Blac Shrec
                 </p>
               </motion.div>

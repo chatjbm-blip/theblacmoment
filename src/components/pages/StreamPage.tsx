@@ -55,10 +55,10 @@ export default function StreamPage() {
   const currentEp = episodes[activeEpisode];
 
   return (
-    <div className="min-h-screen bg-black pt-24 pb-32">
+    <div className="min-h-screen bg-black pt-20 sm:pt-24 pb-28 sm:pb-32">
       {/* Background accents */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-[#E47D08]/5 rounded-full blur-[180px]" />
+        <div className="absolute top-1/3 left-1/4 w-[400px] md:w-[500px] h-[400px] md:h-[500px] bg-[#E47D08]/5 rounded-full blur-[180px]" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -67,18 +67,18 @@ export default function StreamPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-12"
+          className="mb-8 sm:mb-12"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E47D08]/10 text-[#FF8D28] text-sm font-medium mb-6">
+          <span className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-[#E47D08]/10 text-[#FF8D28] text-xs sm:text-sm font-medium mb-4 sm:mb-6">
             <Headphones size={14} />
             Stream Now
           </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4">
             Catch the <span className="gradient-text">Vibe</span>
           </h1>
-          <p className="text-lg text-white/50 max-w-2xl">
+          <p className="text-base sm:text-lg text-white/50 max-w-2xl">
             Stream live episodes and catch up on conversations that matter.
-            Click any episode below to start watching.
+            Tap any episode below to start watching.
           </p>
         </motion.div>
 
@@ -87,9 +87,9 @@ export default function StreamPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="mb-12"
+          className="mb-8 sm:mb-12"
         >
-          <div className="rounded-3xl overflow-hidden bg-white/[0.02] border border-white/[0.06]">
+          <div className="rounded-2xl sm:rounded-3xl overflow-hidden bg-white/[0.02] border border-white/[0.06]">
             {/* Active Video */}
             <div className="relative aspect-video bg-black">
               <AnimatePresence mode="wait">
@@ -113,26 +113,26 @@ export default function StreamPage() {
             </div>
 
             {/* Now Playing Info */}
-            <div className="p-6 md:p-8">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#E47D08]/10 text-[#FF8D28] text-xs font-semibold">
+            <div className="p-4 sm:p-6 md:p-8">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
+                    <span className="px-2 sm:px-2.5 py-0.5 rounded-full bg-[#E47D08]/10 text-[#FF8D28] text-[10px] sm:text-xs font-semibold">
                       {currentEp.number}
                     </span>
-                    <span className="text-xs text-white/30 flex items-center gap-1">
+                    <span className="text-[10px] sm:text-xs text-white/30 flex items-center gap-1">
                       <Clock size={10} />
                       {currentEp.duration}
                     </span>
-                    <span className="text-xs text-white/20 flex items-center gap-1">
+                    <span className="text-[10px] sm:text-xs text-white/20 flex items-center gap-1">
                       <Calendar size={10} />
                       {currentEp.date}
                     </span>
                   </div>
-                  <h2 className="text-xl md:text-2xl font-bold text-white mb-2">
+                  <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2">
                     {currentEp.title}
                   </h2>
-                  <p className="text-sm text-white/40 max-w-2xl">
+                  <p className="text-xs sm:text-sm text-white/40 max-w-2xl line-clamp-3 sm:line-clamp-none">
                     {currentEp.description}
                   </p>
                 </div>
@@ -140,10 +140,10 @@ export default function StreamPage() {
                   href={`https://www.youtube.com/watch?v=${currentEp.youtubeId}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="shrink-0 p-3 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-[#E47D08]/30 transition-all group"
+                  className="shrink-0 p-2.5 sm:p-3 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-[#E47D08]/30 transition-all group touch-target mobile-press"
                 >
                   <ExternalLink
-                    size={18}
+                    size={16}
                     className="text-white/40 group-hover:text-[#FF8D28] transition-colors"
                   />
                 </a>
@@ -158,21 +158,66 @@ export default function StreamPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <ListMusic size={18} className="text-[#E47D08]" />
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+              <ListMusic size={16} className="text-[#E47D08] sm:w-[18px] sm:h-[18px]" />
               Up Next
             </h3>
             <Link
               href="/gallery"
-              className="text-sm text-[#E47D08] hover:text-[#FF8D28] transition-colors flex items-center gap-1"
+              className="text-xs sm:text-sm text-[#E47D08] hover:text-[#FF8D28] transition-colors flex items-center gap-1 touch-target"
             >
-              View All Episodes
+              View All
               <ChevronRight size={14} />
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4">
+          {/* Mobile: horizontal scroll */}
+          <div className="sm:hidden">
+            <div className="mobile-scroll gap-3 pb-2 -mx-4 px-4">
+              {episodes.map((ep, i) => (
+                <motion.button
+                  key={ep.id}
+                  onClick={() => setActiveEpisode(i)}
+                  className={`w-[220px] shrink-0 text-left rounded-xl p-4 transition-all duration-300 border mobile-press ${
+                    activeEpisode === i
+                      ? "bg-[#E47D08]/10 border-[#E47D08]/30 shadow-lg shadow-[#E47D08]/10"
+                      : "bg-white/[0.02] border-white/[0.06] hover:border-white/10"
+                  }`}
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <span
+                      className={`px-2 py-0.5 rounded-full text-[9px] font-semibold ${
+                        activeEpisode === i
+                          ? "bg-[#E47D08] text-white"
+                          : "bg-[#E47D08]/10 text-[#FF8D28]"
+                      }`}
+                    >
+                      {ep.number}
+                    </span>
+                    <span className="text-[9px] text-white/25 flex items-center gap-0.5">
+                      <Clock size={8} />
+                      {ep.duration}
+                    </span>
+                  </div>
+                  <h4
+                    className={`text-xs font-bold mb-1 line-clamp-2 leading-snug ${
+                      activeEpisode === i ? "text-[#FF8D28]" : "text-white"
+                    }`}
+                  >
+                    {ep.title}
+                  </h4>
+                  <div className="flex items-center gap-1 text-[9px] text-white/20">
+                    <Tag size={8} />
+                    {ep.category}
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop: grid */}
+          <div className="hidden sm:grid md:grid-cols-3 gap-4">
             {episodes.map((ep, i) => (
               <motion.button
                 key={ep.id}
@@ -222,16 +267,16 @@ export default function StreamPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-12 text-center"
+          className="mt-8 sm:mt-12 text-center"
         >
           <a
             href="https://www.youtube.com/@TheBlacMoment"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold transition-all duration-300 hover:scale-105 shadow-lg shadow-red-600/20"
+            className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white text-sm sm:text-base font-semibold transition-all duration-300 mobile-press shadow-lg shadow-red-600/20"
           >
             <svg
-              className="w-5 h-5"
+              className="w-4 h-4 sm:w-5 sm:h-5 shrink-0"
               viewBox="0 0 24 24"
               fill="currentColor"
             >

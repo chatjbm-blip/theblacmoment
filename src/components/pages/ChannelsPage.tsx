@@ -54,10 +54,10 @@ const platforms = [
 
 export default function ChannelsPage() {
   return (
-    <div className="min-h-screen bg-black pt-24 pb-32">
+    <div className="min-h-screen bg-black pt-20 sm:pt-24 pb-28 sm:pb-32">
       {/* Background */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#E47D08]/3 rounded-full blur-[200px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] md:w-[800px] h-[300px] md:h-[400px] bg-[#E47D08]/3 rounded-full blur-[200px]" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,17 +66,17 @@ export default function ChannelsPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-16"
+          className="mb-10 sm:mb-16"
         >
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E47D08]/10 text-[#FF8D28] text-sm font-medium mb-6">
             <Radio size={14} />
             Channels
           </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4">
             Find Us on{" "}
             <span className="gradient-text">Your Platform</span>
           </h1>
-          <p className="text-lg text-white/50 max-w-2xl">
+          <p className="text-base sm:text-lg text-white/50 max-w-2xl">
             Wherever you tune in, The Blac Moment is there. Choose your
             preferred platform and subscribe to never miss an episode.
           </p>
@@ -93,12 +93,12 @@ export default function ChannelsPage() {
               className="group"
             >
               <div
-                className={`rounded-3xl bg-gradient-to-r ${platform.bgColor} border border-white/[0.06] p-8 md:p-10 hover:border-white/10 transition-all duration-500`}
+                className={`rounded-2xl sm:rounded-3xl bg-gradient-to-r ${platform.bgColor} border border-white/[0.06] p-5 sm:p-8 md:p-10 hover:border-white/10 transition-all duration-500`}
               >
-                <div className="grid md:grid-cols-[auto_1fr_auto] gap-8 items-center">
+                <div className="flex md:grid md:grid-cols-[auto_1fr_auto] gap-4 sm:gap-8 items-center">
                   {/* Icon */}
                   <div
-                    className="w-20 h-20 rounded-2xl flex items-center justify-center shrink-0"
+                    className="w-14 h-14 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0"
                     style={{ backgroundColor: `${platform.color}15` }}
                   >
                     <div style={{ color: platform.color }}>
@@ -107,13 +107,13 @@ export default function ChannelsPage() {
                   </div>
 
                   {/* Content */}
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <h2 className="text-2xl font-bold text-white">
+                  <div className="space-y-1.5 sm:space-y-3 min-w-0">
+                    <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                      <h2 className="text-lg sm:text-2xl font-bold text-white">
                         {platform.name}
                       </h2>
                       <span
-                        className="px-3 py-1 rounded-full text-xs font-semibold"
+                        className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold"
                         style={{
                           backgroundColor: `${platform.color}15`,
                           color: platform.color,
@@ -122,10 +122,10 @@ export default function ChannelsPage() {
                         {platform.status}
                       </span>
                     </div>
-                    <p className="text-sm md:text-base text-white/50 leading-relaxed max-w-xl">
+                    <p className="text-xs sm:text-sm md:text-base text-white/50 leading-relaxed max-w-xl line-clamp-2 md:line-clamp-none">
                       {platform.description}
                     </p>
-                    <div className="flex items-center gap-4 text-sm">
+                    <div className="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm">
                       <span
                         className="flex items-center gap-1.5 font-medium"
                         style={{ color: platform.color }}
@@ -145,7 +145,7 @@ export default function ChannelsPage() {
                     href={platform.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 hover:scale-105 shrink-0"
+                    className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold text-xs sm:text-sm transition-all duration-300 hover:scale-105 shrink-0 mobile-press"
                     style={{
                       backgroundColor: platform.color,
                       color: "#fff",
@@ -174,21 +174,21 @@ export default function ChannelsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-16 text-center"
+          className="mt-10 sm:mt-16 text-center"
         >
-          <div className="rounded-3xl bg-white/[0.02] border border-white/[0.06] p-8 md:p-12 max-w-2xl mx-auto">
-            <Headphones size={32} className="text-[#E47D08] mx-auto mb-4" />
-            <h3 className="text-xl md:text-2xl font-bold text-white mb-3">
+          <div className="rounded-2xl sm:rounded-3xl bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 md:p-12 max-w-2xl mx-auto">
+            <Headphones size={28} className="text-[#E47D08] mx-auto mb-3 sm:mb-4" />
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-3">
               Prefer another platform?
             </h3>
-            <p className="text-sm text-white/40 mb-6">
+            <p className="text-xs sm:text-sm text-white/40 mb-4 sm:mb-6">
               We&apos;re always expanding. Let us know where you listen and
               we&apos;ll prioritize getting The Blac Moment on your platform of
               choice.
             </p>
             <a
               href="#"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#E47D08] hover:bg-[#FF8D28] text-white font-semibold transition-all duration-300 hover:scale-105"
+              className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#E47D08] hover:bg-[#FF8D28] text-white text-sm sm:text-base font-semibold transition-all duration-300 mobile-press"
             >
               Request a Platform
               <ExternalLink size={16} />

@@ -77,32 +77,32 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="relative py-24 md:py-32 bg-[#050505] overflow-hidden">
+    <section id="contact" className="relative py-16 sm:py-24 md:py-32 bg-[#050505] overflow-hidden">
       {/* Background accents */}
       <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#E47D08]/5 rounded-full blur-[150px]" />
       <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-[#E47D08]/3 rounded-full blur-[120px]" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20">
           {/* Left: Text */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="space-y-8"
+            className="space-y-6 sm:space-y-8"
           >
             <div>
-              <span className="inline-block px-4 py-1.5 rounded-full bg-[#E47D08]/10 text-[#FF8D28] text-sm font-medium mb-6">
+              <span className="inline-block px-3 sm:px-4 py-1.5 rounded-full bg-[#E47D08]/10 text-[#FF8D28] text-xs sm:text-sm font-medium mb-4 sm:mb-6">
                 Get In Touch
               </span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                 Let&apos;s{" "}
                 <span className="gradient-text">Talk</span>
               </h2>
             </div>
 
-            <p className="text-lg text-white/60 leading-relaxed">
+            <p className="text-base sm:text-lg text-white/60 leading-relaxed">
               Got a topic suggestion? Want to sponsor an episode? Think you have
               what it takes to be a guest on The Blac Moment? Reach out.
             </p>
@@ -150,7 +150,7 @@ export default function ContactSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <div className="rounded-3xl bg-white/[0.03] border border-white/[0.06] p-6 md:p-8">
+            <div className="rounded-2xl sm:rounded-3xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-6 md:p-8">
               {isSubmitted ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}

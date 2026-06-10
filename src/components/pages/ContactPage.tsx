@@ -118,11 +118,11 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black pt-24 pb-32">
+    <div className="min-h-screen bg-black pt-20 sm:pt-24 pb-28 sm:pb-32">
       {/* Background */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#E47D08]/5 rounded-full blur-[150px]" />
-        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-[#E47D08]/3 rounded-full blur-[120px]" />
+        <div className="absolute top-0 right-0 w-[300px] md:w-[400px] h-[300px] md:h-[400px] bg-[#E47D08]/5 rounded-full blur-[150px]" />
+        <div className="absolute bottom-0 left-0 w-[250px] md:w-[300px] h-[250px] md:h-[300px] bg-[#E47D08]/3 rounded-full blur-[120px]" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -131,16 +131,16 @@ export default function ContactPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-16"
+          className="mb-10 sm:mb-16"
         >
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E47D08]/10 text-[#FF8D28] text-sm font-medium mb-6">
             <Mail size={14} />
             Get In Touch
           </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4">
             Let&apos;s <span className="gradient-text">Talk</span>
           </h1>
-          <p className="text-lg text-white/50 max-w-2xl">
+          <p className="text-base sm:text-lg text-white/50 max-w-2xl">
             Got a topic suggestion? Want to sponsor an episode? Think you have
             what it takes to be a guest on The Blac Moment? Reach out.
           </p>
@@ -151,7 +151,7 @@ export default function ContactPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16"
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-10 sm:mb-16"
         >
           {contactOptions.map((opt, i) => (
             <motion.div
@@ -159,7 +159,7 @@ export default function ContactPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 + i * 0.08 }}
-              className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 transition-all duration-300 group"
+              className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 transition-all duration-300 group mobile-press"
             >
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
@@ -167,7 +167,7 @@ export default function ContactPage() {
               >
                 <opt.icon size={20} style={{ color: opt.color }} />
               </div>
-              <h3 className="font-semibold text-white text-sm mb-1.5">
+              <h3 className="font-semibold text-white text-xs sm:text-sm mb-1">
                 {opt.title}
               </h3>
               <p className="text-xs text-white/35 leading-relaxed">
