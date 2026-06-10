@@ -1,18 +1,36 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    // Public read for episode thumbnails and images
+
+    // Episode audio files — anyone can read, only auth can write
+    match /episodes/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Images — anyone can read, only auth can write
+    match /images/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Public assets — anyone can read, only auth can write
     match /public/{allPaths=**} {
       allow read: if true;
       allow write: if request.auth != null;
     }
 
-    // Only authenticated users can access private files
+    // Guest / sponsor uploads — only auth can read and write
+    match /uploads/{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Private files — only auth can access
     match /private/{allPaths=**} {
       allow read, write: if request.auth != null;
     }
 
-    // Deny all other access
+    // Deny everything else by default
     match /{allPaths=**} {
       allow read, write: if false;
     }
