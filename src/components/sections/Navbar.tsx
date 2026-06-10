@@ -4,21 +4,22 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { usePageStore, type PageId } from "@/store/page-store";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-const navLinks: { label: string; page: PageId }[] = [
-  { label: "Home", page: "home" },
-  { label: "Stream Now", page: "stream" },
-  { label: "Gallery", page: "gallery" },
-  { label: "The Host", page: "host" },
-  { label: "Channels", page: "channels" },
-  { label: "Contact Us", page: "contact" },
+const navLinks: { label: string; href: string }[] = [
+  { label: "Home", href: "/" },
+  { label: "Stream Now", href: "/stream" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "The Host", href: "/host" },
+  { label: "Channels", href: "/channels" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const { currentPage, setPage } = usePageStore();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -26,14 +27,14 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Scroll to top when page changes
+  // Close mobile menu on route change
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentPage]);
-
-  const handleNavClick = (page: PageId) => {
-    setPage(page);
     setIsMobileOpen(false);
+  }, [pathname]);
+
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
   };
 
   return (
@@ -50,44 +51,41 @@ export default function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <button
-            onClick={() => handleNavClick("home")}
-            className="flex items-center gap-3 group"
-          >
+          <Link href="/" className="flex items-center gap-3 group">
             <img
               src="/images/logo.png"
               alt="The Blac Moment Logo"
               className="h-10 w-auto transition-transform duration-300 group-hover:scale-110"
             />
-          </button>
+          </Link>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => {
-              const isActive = currentPage === link.page;
+              const active = isActive(link.href);
               const isCTA = link.label === "Contact Us";
 
               return (
-                <button
+                <Link
                   key={link.label}
-                  onClick={() => handleNavClick(link.page)}
+                  href={link.href}
                   className={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
                     isCTA
                       ? "bg-[#E47D08] text-white hover:bg-[#FF8D28]"
-                      : isActive
+                      : active
                       ? "text-[#FF8D28] bg-white/5"
                       : "text-white/80 hover:text-white hover:bg-white/5"
                   }`}
                 >
                   {link.label}
-                  {isActive && !isCTA && (
+                  {active && !isCTA && (
                     <motion.div
                       layoutId="activeNav"
                       className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#E47D08]"
                       transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     />
                   )}
-                </button>
+                </Link>
               );
             })}
           </div>
@@ -117,26 +115,29 @@ export default function Navbar() {
           >
             <div className="px-4 py-4 space-y-1">
               {navLinks.map((link, i) => {
-                const isActive = currentPage === link.page;
+                const active = isActive(link.href);
                 const isCTA = link.label === "Contact Us";
 
                 return (
-                  <motion.button
+                  <motion.div
                     key={link.label}
-                    onClick={() => handleNavClick(link.page)}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className={`block w-full text-left px-4 py-3 text-base font-medium rounded-xl transition-colors ${
-                      isCTA
-                        ? "bg-[#E47D08] text-white hover:bg-[#FF8D28] text-center"
-                        : isActive
-                        ? "text-[#FF8D28] bg-white/5"
-                        : "text-white/80 hover:text-white hover:bg-white/5"
-                    }`}
                   >
-                    {link.label}
-                  </motion.button>
+                    <Link
+                      href={link.href}
+                      className={`block w-full text-left px-4 py-3 text-base font-medium rounded-xl transition-colors ${
+                        isCTA
+                          ? "bg-[#E47D08] text-white hover:bg-[#FF8D28] text-center"
+                          : active
+                          ? "text-[#FF8D28] bg-white/5"
+                          : "text-white/80 hover:text-white hover:bg-white/5"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
                 );
               })}
             </div>

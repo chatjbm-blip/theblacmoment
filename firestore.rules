@@ -1,0 +1,52 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper: Check if user is authenticated
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // ─── Contacts Collection ───
+    // Anyone can submit a contact form; only authenticated users can read
+    match /contacts/{docId} {
+      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'description', 'createdAt'])
+                    && request.resource.data.name is string
+                    && request.resource.data.email is string
+                    && request.resource.data.description is string;
+      allow read, update, delete: if isAuth();
+    }
+
+    // ─── Subscribers Collection ───
+    // Anyone can subscribe; only authenticated users can read
+    match /subscribers/{docId} {
+      allow create: if request.resource.data.keys().hasAll(['email', 'createdAt'])
+                    && request.resource.data.email is string;
+      allow read, update, delete: if isAuth();
+    }
+
+    // ─── Episodes Collection ───
+    // Anyone can read episodes; only authenticated users can write
+    match /episodes/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAuth();
+    }
+
+    // ─── Analytics Events ───
+    // Anyone can create analytics events; only authenticated users can read
+    match /analytics/{docId} {
+      allow create: if request.resource.data.keys().hasAll(['event', 'timestamp']);
+      allow read, update, delete: if isAuth();
+    }
+
+    // ─── Testimonials Collection ───
+    match /testimonials/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAuth();
+    }
+
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

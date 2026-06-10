@@ -21,33 +21,59 @@ export default function ContactSection() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError("");
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for reaching out. We'll get back to you soon!",
-    });
-
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        name: "",
-        email: "",
-        description: "",
-        becomeGuest: true,
-        becomeSponsor: false,
-        invite: false,
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
-    }, 3000);
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setIsSubmitted(true);
+        toast({
+          title: "Message Sent!",
+          description: "Thank you for reaching out. We'll get back to you soon!",
+        });
+
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({
+            name: "",
+            email: "",
+            description: "",
+            becomeGuest: true,
+            becomeSponsor: false,
+            invite: false,
+          });
+        }, 4000);
+      } else {
+        setSubmitError(data.error || "Something went wrong");
+        toast({
+          title: "Error",
+          description: data.error || "Failed to send message",
+          variant: "destructive",
+        });
+      }
+    } catch {
+      setSubmitError("Network error. Please try again.");
+      toast({
+        title: "Error",
+        description: "Network error. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -138,7 +164,7 @@ export default function ContactSection() {
                     Thank You!
                   </h3>
                   <p className="text-white/50">
-                    Your message has been received. We&apos;ll get back to you soon.
+                    Your message has been saved. We&apos;ll get back to you soon.
                   </p>
                 </motion.div>
               ) : (
@@ -241,6 +267,13 @@ export default function ContactSection() {
                       </div>
                     ))}
                   </div>
+
+                  {/* Error message */}
+                  {submitError && (
+                    <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                      {submitError}
+                    </div>
+                  )}
 
                   <Button
                     type="submit"

@@ -3,10 +3,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Headphones, Bell, ArrowRight } from "lucide-react";
-import { usePageStore } from "@/store/page-store";
+import Link from "next/link";
 
 export default function SubscribeBanner() {
-  const { setPage } = usePageStore();
   return (
     <section className="relative py-24 md:py-32 bg-black overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -58,13 +57,13 @@ export default function SubscribeBanner() {
                   <Bell size={20} />
                   Subscribe Now
                 </a>
-                <a
-                  onClick={() => setPage("gallery")}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-white/20 text-white font-semibold text-lg hover:bg-white/5 transition-all duration-300 cursor-pointer"
+                <Link
+                  href="/gallery"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-white/20 text-white font-semibold text-lg hover:bg-white/5 transition-all duration-300"
                 >
                   Listen Free
                   <ArrowRight size={18} />
-                </a>
+                </Link>
               </div>
             </motion.div>
 

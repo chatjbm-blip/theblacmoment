@@ -1,16 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Youtube, Instagram, Twitter } from "lucide-react";
-import { usePageStore, type PageId } from "@/store/page-store";
+import { Youtube, Instagram, Twitter, Send, Loader2, CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-const footerLinks: { label: string; page: PageId }[] = [
-  { label: "Home", page: "home" },
-  { label: "Stream Now", page: "stream" },
-  { label: "The Host", page: "host" },
-  { label: "Channels", page: "channels" },
-  { label: "Contact Us", page: "contact" },
+const footerLinks: { label: string; href: string }[] = [
+  { label: "Home", href: "/" },
+  { label: "Stream Now", href: "/stream" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "The Host", href: "/host" },
+  { label: "Channels", href: "/channels" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 const socialLinks = [
@@ -24,7 +26,46 @@ const socialLinks = [
 ];
 
 export default function Footer() {
-  const { setPage } = usePageStore();
+  const pathname = usePathname();
+  const [email, setEmail] = useState("");
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+
+    setIsSubscribing(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, source: "footer" }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setSubscribed(true);
+        setEmail("");
+        setTimeout(() => setSubscribed(false), 4000);
+      } else if (data.alreadySubscribed) {
+        setError("Already subscribed!");
+        setTimeout(() => setError(""), 3000);
+      } else {
+        setError(data.error || "Something went wrong");
+        setTimeout(() => setError(""), 3000);
+      }
+    } catch {
+      setError("Network error. Please try again.");
+      setTimeout(() => setError(""), 3000);
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
 
   return (
     <footer className="relative bg-black border-t border-white/5">
@@ -37,16 +78,13 @@ export default function Footer() {
             viewport={{ once: true }}
             className="space-y-4"
           >
-            <button
-              onClick={() => setPage("home")}
-              className="flex items-center gap-3 group"
-            >
+            <Link href="/" className="flex items-center gap-3 group">
               <img
                 src="/images/logo.png"
                 alt="The Blac Moment Logo"
                 className="h-10 w-auto transition-transform duration-300 group-hover:scale-110"
               />
-            </button>
+            </Link>
             <p className="text-sm text-white/40 leading-relaxed max-w-xs">
               Unfiltered conversations. Raw perspectives. Bold stories from
               actionists around the world.
@@ -84,22 +122,18 @@ export default function Footer() {
             <ul className="space-y-3">
               {footerLinks.map((link) => (
                 <li key={link.label}>
-                  <button
-                    onClick={() => setPage(link.page)}
-                    className="text-sm text-white/40 hover:text-[#FF8D28] transition-colors duration-300"
+                  <Link
+                    href={link.href}
+                    className={`text-sm transition-colors duration-300 ${
+                      pathname === link.href
+                        ? "text-[#FF8D28]"
+                        : "text-white/40 hover:text-[#FF8D28]"
+                    }`}
                   >
                     {link.label}
-                  </button>
+                  </Link>
                 </li>
               ))}
-              <li>
-                <button
-                  onClick={() => setPage("gallery")}
-                  className="text-sm text-white/40 hover:text-[#FF8D28] transition-colors duration-300"
-                >
-                  Gallery
-                </button>
-              </li>
             </ul>
           </motion.div>
 
@@ -118,22 +152,37 @@ export default function Footer() {
               Subscribe to get notified about new episodes and exclusive
               content.
             </p>
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              className="flex gap-2"
-            >
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[#E47D08]/50"
-              />
-              <button
-                type="submit"
-                className="px-4 py-2.5 rounded-xl bg-[#E47D08] hover:bg-[#FF8D28] text-white text-sm font-semibold transition-colors shrink-0"
-              >
-                Join
-              </button>
-            </form>
+            {subscribed ? (
+              <div className="flex items-center gap-2 text-green-400 text-sm">
+                <CheckCircle2 size={16} />
+                Subscribed successfully!
+              </div>
+            ) : (
+              <form onSubmit={handleSubscribe} className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="flex-1 bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[#E47D08]/50"
+                />
+                <button
+                  type="submit"
+                  disabled={isSubscribing}
+                  className="px-4 py-2.5 rounded-xl bg-[#E47D08] hover:bg-[#FF8D28] text-white text-sm font-semibold transition-colors shrink-0 disabled:opacity-50"
+                >
+                  {isSubscribing ? (
+                    <Loader2 size={16} className="animate-spin" />
+                  ) : (
+                    <Send size={16} />
+                  )}
+                </button>
+              </form>
+            )}
+            {error && (
+              <p className="text-xs text-red-400">{error}</p>
+            )}
           </motion.div>
         </div>
 

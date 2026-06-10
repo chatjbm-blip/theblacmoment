@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import Navbar from "@/components/sections/Navbar";
+import Footer from "@/components/sections/Footer";
+import AudioPlayer from "@/components/ui-custom/AudioPlayer";
+import ScrollProgress from "@/components/ui-custom/ScrollProgress";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -51,7 +55,13 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} font-sans antialiased bg-background text-foreground`}
       >
-        {children}
+        <div className="min-h-screen flex flex-col bg-black">
+          <ScrollProgress />
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <AudioPlayer />
+        </div>
         <Toaster />
       </body>
     </html>

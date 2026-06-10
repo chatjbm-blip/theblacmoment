@@ -12,7 +12,7 @@ import {
   ListMusic,
   Headphones,
 } from "lucide-react";
-import { usePageStore } from "@/store/page-store";
+import Link from "next/link";
 
 const episodes = [
   {
@@ -52,8 +52,6 @@ const episodes = [
 
 export default function StreamPage() {
   const [activeEpisode, setActiveEpisode] = useState(0);
-  const { setPage } = usePageStore();
-
   const currentEp = episodes[activeEpisode];
 
   return (
@@ -165,13 +163,13 @@ export default function StreamPage() {
               <ListMusic size={18} className="text-[#E47D08]" />
               Up Next
             </h3>
-            <button
-              onClick={() => setPage("gallery")}
+            <Link
+              href="/gallery"
               className="text-sm text-[#E47D08] hover:text-[#FF8D28] transition-colors flex items-center gap-1"
             >
               View All Episodes
               <ChevronRight size={14} />
-            </button>
+            </Link>
           </div>
 
           <div className="grid md:grid-cols-3 gap-4">
