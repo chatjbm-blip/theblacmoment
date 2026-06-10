@@ -3,13 +3,14 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Youtube, Instagram, Twitter } from "lucide-react";
+import { usePageStore, type PageId } from "@/store/page-store";
 
-const footerLinks = [
-  { label: "Home", href: "#home" },
-  { label: "Stream Now", href: "#stream" },
-  { label: "The Host", href: "#host" },
-  { label: "Channels", href: "#channels" },
-  { label: "Contact Us", href: "#contact" },
+const footerLinks: { label: string; page: PageId }[] = [
+  { label: "Home", page: "home" },
+  { label: "Stream Now", page: "stream" },
+  { label: "The Host", page: "host" },
+  { label: "Channels", page: "channels" },
+  { label: "Contact Us", page: "contact" },
 ];
 
 const socialLinks = [
@@ -23,10 +24,7 @@ const socialLinks = [
 ];
 
 export default function Footer() {
-  const scrollTo = (href: string) => {
-    const el = document.querySelector(href);
-    el?.scrollIntoView({ behavior: "smooth" });
-  };
+  const { setPage } = usePageStore();
 
   return (
     <footer className="relative bg-black border-t border-white/5">
@@ -39,11 +37,16 @@ export default function Footer() {
             viewport={{ once: true }}
             className="space-y-4"
           >
-            <img
-              src="/images/logo.png"
-              alt="The Blac Moment Logo"
-              className="h-10 w-auto"
-            />
+            <button
+              onClick={() => setPage("home")}
+              className="flex items-center gap-3 group"
+            >
+              <img
+                src="/images/logo.png"
+                alt="The Blac Moment Logo"
+                className="h-10 w-auto transition-transform duration-300 group-hover:scale-110"
+              />
+            </button>
             <p className="text-sm text-white/40 leading-relaxed max-w-xs">
               Unfiltered conversations. Raw perspectives. Bold stories from
               actionists around the world.
@@ -81,18 +84,22 @@ export default function Footer() {
             <ul className="space-y-3">
               {footerLinks.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      scrollTo(link.href);
-                    }}
+                  <button
+                    onClick={() => setPage(link.page)}
                     className="text-sm text-white/40 hover:text-[#FF8D28] transition-colors duration-300"
                   >
                     {link.label}
-                  </a>
+                  </button>
                 </li>
               ))}
+              <li>
+                <button
+                  onClick={() => setPage("gallery")}
+                  className="text-sm text-white/40 hover:text-[#FF8D28] transition-colors duration-300"
+                >
+                  Gallery
+                </button>
+              </li>
             </ul>
           </motion.div>
 

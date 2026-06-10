@@ -4,18 +4,21 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { usePageStore, type PageId } from "@/store/page-store";
 
-const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "Stream Now", href: "#stream" },
-  { label: "The Host", href: "#host" },
-  { label: "Channels", href: "#channels" },
-  { label: "Contact Us", href: "#contact" },
+const navLinks: { label: string; page: PageId }[] = [
+  { label: "Home", page: "home" },
+  { label: "Stream Now", page: "stream" },
+  { label: "Gallery", page: "gallery" },
+  { label: "The Host", page: "host" },
+  { label: "Channels", page: "channels" },
+  { label: "Contact Us", page: "contact" },
 ];
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { currentPage, setPage } = usePageStore();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -23,10 +26,14 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleLinkClick = (href: string) => {
+  // Scroll to top when page changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
+
+  const handleNavClick = (page: PageId) => {
+    setPage(page);
     setIsMobileOpen(false);
-    const el = document.querySelector(href);
-    el?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -43,12 +50,8 @@ export default function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a
-            href="#home"
-            onClick={(e) => {
-              e.preventDefault();
-              handleLinkClick("#home");
-            }}
+          <button
+            onClick={() => handleNavClick("home")}
             className="flex items-center gap-3 group"
           >
             <img
@@ -56,27 +59,37 @@ export default function Navbar() {
               alt="The Blac Moment Logo"
               className="h-10 w-auto transition-transform duration-300 group-hover:scale-110"
             />
-          </a>
+          </button>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link, i) => (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleLinkClick(link.href);
-                }}
-                className={`relative px-4 py-2 text-sm font-medium text-white/80 hover:text-white transition-colors duration-300 rounded-full hover:bg-white/5 ${
-                  link.label === "Contact Us"
-                    ? "!bg-[#E47D08] !text-white hover:!bg-[#FF8D28]"
-                    : ""
-                }`}
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = currentPage === link.page;
+              const isCTA = link.label === "Contact Us";
+
+              return (
+                <button
+                  key={link.label}
+                  onClick={() => handleNavClick(link.page)}
+                  className={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+                    isCTA
+                      ? "bg-[#E47D08] text-white hover:bg-[#FF8D28]"
+                      : isActive
+                      ? "text-[#FF8D28] bg-white/5"
+                      : "text-white/80 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  {link.label}
+                  {isActive && !isCTA && (
+                    <motion.div
+                      layoutId="activeNav"
+                      className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#E47D08]"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                </button>
+              );
+            })}
           </div>
 
           {/* Mobile Toggle */}
@@ -103,26 +116,29 @@ export default function Navbar() {
             className="md:hidden glass border-t border-white/5"
           >
             <div className="px-4 py-4 space-y-1">
-              {navLinks.map((link, i) => (
-                <motion.a
-                  key={link.label}
-                  href={link.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleLinkClick(link.href);
-                  }}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className={`block px-4 py-3 text-base font-medium text-white/80 hover:text-white transition-colors rounded-xl hover:bg-white/5 ${
-                    link.label === "Contact Us"
-                      ? "!bg-[#E47D08] !text-white hover:!bg-[#FF8D28] text-center"
-                      : ""
-                  }`}
-                >
-                  {link.label}
-                </motion.a>
-              ))}
+              {navLinks.map((link, i) => {
+                const isActive = currentPage === link.page;
+                const isCTA = link.label === "Contact Us";
+
+                return (
+                  <motion.button
+                    key={link.label}
+                    onClick={() => handleNavClick(link.page)}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                    className={`block w-full text-left px-4 py-3 text-base font-medium rounded-xl transition-colors ${
+                      isCTA
+                        ? "bg-[#E47D08] text-white hover:bg-[#FF8D28] text-center"
+                        : isActive
+                        ? "text-[#FF8D28] bg-white/5"
+                        : "text-white/80 hover:text-white hover:bg-white/5"
+                    }`}
+                  >
+                    {link.label}
+                  </motion.button>
+                );
+              })}
             </div>
           </motion.div>
         )}

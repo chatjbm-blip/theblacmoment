@@ -4,11 +4,10 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Play, Mic2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { usePageStore } from "@/store/page-store";
 
 export default function HeroSection() {
-  const scrollTo = (id: string) => {
-    document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
-  };
+  const { setPage } = usePageStore();
 
   return (
     <section
@@ -100,14 +99,14 @@ export default function HeroSection() {
               className="flex flex-wrap gap-4"
             >
               <Button
-                onClick={() => scrollTo("#stream")}
+                onClick={() => setPage("gallery")}
                 className="bg-[#E47D08] hover:bg-[#FF8D28] text-white px-8 py-6 text-base font-semibold rounded-full shadow-lg shadow-[#E47D08]/25 transition-all duration-300 hover:shadow-[#E47D08]/40 hover:scale-105"
               >
                 <Play size={18} className="mr-2" />
                 Listen To New Episodes
               </Button>
               <Button
-                onClick={() => scrollTo("#contact")}
+                onClick={() => setPage("contact")}
                 variant="outline"
                 className="border-white/20 text-white hover:bg-white/5 hover:border-white/40 px-8 py-6 text-base font-semibold rounded-full transition-all duration-300 hover:scale-105"
               >
